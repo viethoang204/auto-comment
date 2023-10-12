@@ -11,12 +11,14 @@ import json
 import re
 import time
 
+# HÀM ĐỂ LỌC CÂU CMT CÓ EMOJI KHÔNG
 def has_emoji(sentence):
   for char in sentence:
     if emoji.is_emoji(char):
       return True
   return False
 
+# HÀM ĐỂ LỌC CÁC CÂU CMT
 def clean_sentences(input_string):
     # Loại bỏ kí hiệu không mong muốn
     input_string = input_string.replace('"', '').replace("'", "").replace(".", "").replace("(", "").replace(")", "").replace(":", "")
@@ -32,6 +34,7 @@ def clean_sentences(input_string):
 
     return [sentence for sentence in cleaned_sentences if has_emoji(sentence)]
 
+# HÀM ĐỂ XÁC ĐỊNH XEM NGƯỜI DÙNG ĐÃ THẢ TIM HAY CHƯA, NẾU RỒI THÌ BỎ QUA, CHƯA THÌ THẢ TIM
 def click_heart(driver):
     # Hover and click the heart
     element_to_hover = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "reactinText_fe9327d3")))
@@ -46,6 +49,7 @@ def click_heart(driver):
     # print("Performing heart-clicking action.")
     hover_box_heart.click()
 
+# TRÍCH XUẤT N CHỮ CỦA ĐOẠN VĂN
 def shorten_content(text, num):
     # Thay thế các dãy khoảng trắng liên tiếp bằng một khoảng trắng duy nhất
     single_spaced = re.sub(r'\s+', ' ', text)
@@ -59,6 +63,7 @@ def shorten_content(text, num):
     # Nối lại để tạo chuỗi và trả về kết quả
     return ' '.join(content)
 
+# HÀM CHO ACCOUNT ĐẦU TIÊN
 def extract_link(account, idx, lst_cmt, news_num):
     driver.get("https://tngholding.sharepoint.com/sites/tconnect/SitePages/NewsListing.aspx?cateId=25")
 
@@ -128,6 +133,7 @@ def extract_link(account, idx, lst_cmt, news_num):
     driver.delete_all_cookies()
     return link_news, lst_cmt
 
+# HÀM CHO ACCOUNT CÒN LẠI
 def no_extract_link(account, idx, lst_cmt):
     driver.get(link_news)
 
@@ -165,7 +171,6 @@ def no_extract_link(account, idx, lst_cmt):
 
 with open('account.json', 'r') as file:
     accounts = json.load(file)['account']
-
 link_news = None
 lst_cmt = []
 for idx, account in enumerate(accounts):
